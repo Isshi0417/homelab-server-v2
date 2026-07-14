@@ -7,6 +7,7 @@ RUN rm -f /etc/apt/sources.list.d/yarn.list \
     software-properties-common \
     git \
     openssh-client \
+    genisoimage \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg \
