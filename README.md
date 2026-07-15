@@ -27,33 +27,33 @@ This lab runs on a dedicated physical BOSGAME PC acting as our baremetal KVM hyp
 
 ```mermaid
 graph TD
-    Laptop[Laptop: Bazzite OS] -- SSH / IaC Control --o Hypervisor[Hypervisor Host: AlmaLinux 10]
+    Laptop["Laptop: Bazzite OS"] -->|SSH / IaC Control| Hypervisor["Hypervisor Host: AlmaLinux 10"]
 
-    subgraph host ["Hypervisor Host (172.30.1.200)]
-        Bridge[Physical Bridge: br0]
-        KVM[KVM / QEMU Hypervisor]
-        Cloudflared[cloudflared container<br>--net=host]
+    subgraph Host ["Hypervisor Host (172.30.1.200)"]
+        Bridge["Physical Bridge: br0"]
+        KVM["KVM / QEMU Hypervisor"]
+        Cloudflared["cloudflared container (--net=host)"]
 
-        Bridge --- Cloudlfared
-        Bridge --- VM1[freeipa<br>172.30.1.85]
-        Bridge --- VM2[portfolio<br>172.30.1.93]
-        Bridge --- VM3[minecraft<br>172.30.1.91]
-        Bridge --- VM4[palworld<br>172.30.1.90]
-        Bridge --- VM5[navidrome<br>172.30.1.92]
+        Bridge --- Cloudflared
+        Bridge --- VM1["freeipa (172.30.1.85)"]
+        Bridge --- VM2["portfolio (172.30.1.93)"]
+        Bridge --- VM3["minecraft (172.30.1.91)"]
+        Bridge --- VM4["palworld (172.30.1.90)"]
+        Bridge --- VM5["navidrome (172.30.1.92)"]
     end
 
-    subgraph cloudflare ["Cloudflare Edge (WAN)"]
-        CF_Edge[Cloudflare Proxy]
-        CF_Edge -- portfolio.shooey.xyz -> VM2:80 --o Client1[Browser]
-        CF_Edge -- Secure Tunnel -o Cloudflared
-        CF_Edge -- hampter.shooey.xyz -> VM2:8080 --o Client2[Browser]
-        CF_Edge -- ipa.shooey.xyz -> VM1:443 --o Client4[Browser]
+    subgraph Cloudflare ["Cloudflare Edge (WAN)"]
+        CF_Edge["Cloudflare Proxy"]
+        CF_Edge -->|Secure Tunnel| Cloudflared
+        CF_Edge -->|portfolio.shooey.xyz| VM2
+        CF_Edge -->|hampter.shooey.xyz| VM2
+        CF_Edge -->|ipa.shooey.xyz| VM1
     end
 
-    subgraph playit ["Playit.gg Edge (WAN)"]
-        Playit_Edge[Playit UDP/TCP Relays]
-        Playit_Edge -- UDP Tunnel --o VM4[Palworld playit agent]
-        Playit_Edge -- TCP Tunnel --o VM3[Minecraft playit agent]
+    subgraph Playit ["Playit.gg Edge (WAN)"]
+        Playit_Edge["Playit Relays"]
+        Playit_Edge -->|UDP Tunnel| VM4
+        Playit_Edge -->|TCP Tunnel| VM3
     end
 ```
 
@@ -66,7 +66,7 @@ To keep the project clean, the documentation is modularized as below:
 *   **[Hypervisor & Bridge Networking](./docs/01_hypervisor_networking.md)**
 *Setting up AlmaLinux 10, KVM, storage pools, bridge interface (`br0`), and DHCP MAC reservation sweeps.*
 
-*   **[IaC Provisioning (Terraform & Ansible)](./docs/02_provisioning.md)
+*   **[IaC Provisioning (Terraform & Ansible)](./docs/02_provisioning.md)**
 *Declarative VM deployments using Terraform cloud-init templates, and Ansible playbooks to install Podman, mount drives, and configure files.*
 
 *   **[Secure Remote Access (Cloudflare Tunnels)](./docs/03_cloudflare_tunnels.md)**
