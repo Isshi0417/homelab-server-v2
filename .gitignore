@@ -46,5 +46,7 @@ Thumbs.db
 *.swp
 *.swo
 
+*.webm
+
 *artifact*
 *ansible-navigator.v1*
