@@ -45,3 +45,6 @@ Thumbs.db
 *.sln
 *.swp
 *.swo
+
+*artifact*
+*ansible-navigator.v1*
