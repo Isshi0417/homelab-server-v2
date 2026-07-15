@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Favorite Person 💖</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating Sparkles Background -->
+    <div class="sparkles-container" id="sparkles-bg"></div>
+
+    <!-- Music Player (Cute Retro Widget) -->
+    <div class="retro-widget music-widget">
+        <div class="widget-header">
+            <span class="widget-title">HammiePlayer.exe</span>
+            <div class="widget-controls">
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+        <div class="widget-body">
+            <button class="music-play-btn" id="play-pause-btn">▶</button>
+            <marquee scrollamount="2" id="music-status">♪ Lo-Fi Radio (Click Play!) ♪</marquee>
+        </div>
+    </div>
+    <audio id="bg-music" loop src="music.webm"></audio>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <header class="retro-header">
+            <h1 class="sparkle-text">⭐ FOR MY HAMMIE ⭐</h1>
+            <p class="subtitle">Click the cards to see some reasons why you are so special to me...</p>
+        </header>
+
+        <!-- Card Deck Wrapper -->
+        <div class="card-deck-wrapper">
+            <div class="card-deck">
+                
+                <!-- Card 1 -->
+                <div class="flip-card active" data-index="1">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-decor-top">⭐⭐⭐</div>
+                            <img src="images/heart.jpg" alt="Hammie Heart" class="card-hamster">
+                            <h2 class="card-title-text">Reason #1</h2>
+                            <p class="click-hint">[ Click to Flip! ]</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h2>The Little Things 🌸</h2>
+                            <p class="card-desc">I love how you remember the tiny details, like the little things we talk about, or how your face lights up whenever you see a cute dog. Your thoughtfulness makes every normal day feel special.</p>
+                            <div class="card-decor-bottom">🌸 🌸 🌸</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flip-card" data-index="2">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-decor-top">⭐⭐⭐</div>
+                            <img src="images/heart.jpg" alt="Hammie Heart" class="card-hamster">
+                            <h2 class="card-title-text">Reason #2</h2>
+                            <p class="click-hint">[ Click to Flip! ]</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h2>Your Warmth 🤗</h2>
+                            <p class="card-desc">Whenever I have a bad day, just sitting next to you makes all the stress melt away. You have this quiet warmth that makes me feel safer than anywhere else in the world.</p>
+                            <div class="card-decor-bottom">✨ ✨ ✨</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flip-card" data-index="3">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-decor-top">⭐⭐⭐</div>
+                            <img src="images/heart.jpg" alt="Hammie Heart" class="card-hamster">
+                            <h2 class="card-title-text">Reason #3</h2>
+                            <p class="click-hint">[ Click to Flip! ]</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h2>Our Laughs 💬</h2>
+                            <p class="card-desc">Nobody makes me laugh the way you do. I cherish all our dumb inside jokes and late-night talks that probably don't make sense to anyone else, but mean everything to me.</p>
+                            <div class="card-decor-bottom">🌻 🌻 🌻</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="flip-card" data-index="4">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-decor-top">⭐⭐⭐</div>
+                            <img src="images/heart.jpg" alt="Hammie Heart" class="card-hamster">
+                            <h2 class="card-title-text">Reason #4</h2>
+                            <p class="click-hint">[ Click to Flip! ]</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h2>Your Kindness 🧸</h2>
+                            <p class="card-desc">You support me through everything and care so deeply for everyone around you. Your heart is so big, and seeing how you treat others makes me want to be a better person every day.</p>
+                            <div class="card-decor-bottom">💖 💖 💖</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 (Sorry Card) -->
+                <div class="flip-card" data-index="5">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-decor-top">🩹🩹🩹</div>
+                            <img src="images/sorry.jpg" alt="Hammie Sorry" class="card-hamster">
+                            <h2 class="card-title-text">For You...</h2>
+                            <p class="click-hint">[ Click to Open ]</p>
+                        </div>
+                        <div class="flip-card-back sorry-back">
+                            <h2>A Note From Me 💌</h2>
+                            <p class="card-desc">I know things have been really tough between us lately and we've been fighting. I wanted to tell you how truly sorry I am...</p>
+                            <button class="retro-btn open-letter-btn" onclick="openLetter()">Open My Letter 💖</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="deck-controls">
+            <button class="retro-btn nav-btn" id="prev-btn" disabled>&lt; Back</button>
+            <div class="progress-indicator">
+                <span class="heart active">💖</span>
+                <span class="heart">💖</span>
+                <span class="heart">💖</span>
+                <span class="heart">💖</span>
+                <span class="heart">💖</span>
+            </div>
+            <button class="retro-btn nav-btn" id="next-btn">Next &gt;</button>
+        </div>
+    </div>
+
+    <!-- Letter Overlay Modal -->
+    <div class="letter-overlay" id="letter-modal">
+        <div class="letter-window">
+            <div class="widget-header">
+                <span class="widget-title">sorry_letter.txt</span>
+                <button class="close-btn" onclick="closeLetter()">X</button>
+            </div>
+            <div class="letter-body">
+                <div class="letter-paper">
+                    <img src="images/sorry.jpg" alt="Hammie Sorry" class="letter-hamster">
+                    <h3>Hi baby,</h3>
+                    
+                    <p>I hate that I've been neglecting you and not being a good boyfriend lately, and the thought of losing you makes my heart ache. I know we might not make it, but even if this is the end and you decide not to get back with me, I wanted to build one last cute thing for you to show you how much you mean to me.</p>
+                    
+                    <p>I know I haven't been perfect, and I've made mistakes that hurt you. I want to apologize from the bottom of my heart. You mean the absolute world to me. I made this little website just to remind you of the happy memories we've built.</p>
+
+                    <p>Whatever happens next, please know that my love for you has always been real, and I cherish every second I got to spend with you.</p>
+
+                    <p class="letter-signature">Love always,<br>Sho</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
