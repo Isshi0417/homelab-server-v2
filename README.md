@@ -64,19 +64,25 @@ graph TD
 To keep the project clean, the documentation is modularized as below:
 
 *   **[Hypervisor & Bridge Networking](./docs/01_hypervisor_networking.md)**
+
 *Setting up AlmaLinux 10, KVM, storage pools, bridge interface (`br0`), and DHCP MAC reservation sweeps.*
 
 *   **[IaC Provisioning (Terraform & Ansible)](./docs/02_provisioning.md)**
+
 *Declarative VM deployments using Terraform cloud-init templates, and Ansible playbooks to install Podman, mount drives, and configure files.*
 
 *   **[Secure Remote Access (Cloudflare Tunnels)](./docs/03_cloudflare_tunnels.md)**
+
 *Configuring the `cloudflared` agent container in host network mode to expose web services privately with Host Header overrides for FreeIPA.*
 
 *   **[Dedicated Game Servers](./docs/04_game_servers.md)**
-*Setting up Minecraft Java server (wuith auto-pause and RCON console) and Palworld UDP server, tunneled through Playit agents using custom SRV records.
+
+*Setting up Minecraft Java server (wuith auto-pause and RCON console) and Palworld UDP server, tunneled through Playit agents using custom SRV records.*
 
 *   **[Shared Cloud Storage (Rclone & FUSE)](./docs/05_navidrome_rclone.md)**
-*Configuring Rclone to mount Google Drive, adjusting `/etc/fuse.conf` permissions, and setting up the Navidrome music server.
+
+*Configuring Rclone to mount Google Drive, adjusting `/etc/fuse.conf` permissions, and setting up the Navidrome music server.*
 
 *   **[Custom Web Hosting (Hammie's Y2K Card Deck)](./docs/06_hamster_website.md)**
-*A dedicated early-2000s pink hamster website on port 8080 with 3D flippable cards, local loopable `.webm` background audio, and click-sparkle JS.
+
+*A dedicated early-2000s pink hamster website on port 8080 with 3D flippable cards, local loopable `.webm` background audio, and click-sparkle JS.*
