@@ -26,35 +26,56 @@ Version 2 upgrades the OS baseline, scales the virtual infrastructure from 3 to 
 This lab runs on a dedicated physical BOSGAME PC acting as our baremetal KVM hypervisor. The VMs are bridged directly to the local LAN, allowing them to act as first-class network devices.
 
 ```mermaid
-graph TD
-    Laptop["Laptop: Bazzite OS"] -->|SSH / IaC Control| Hypervisor["Hypervisor Host: AlmaLinux 10"]
+graph LR
+    %% Control node
+    Laptop["Laptop: Bazzite OS"] -->|SSH / IaC Control| Hypervisor
 
-    subgraph Host ["Hypervisor Host (172.30.1.200)"]
+    %% WAN Ingress Subgraphs
+    subgraph WAN ["WAN / Public Ingress"]
+        CF["Cloudflare Edge Proxy"]
+        Playit["Playit.gg Relays"]
+    end
+
+    %% Hypervisor Subgraph
+    subgraph Hypervisor ["Baremetal Host (172.30.1.200)"]
+        direction TB
+        HostOS["AlmaLinux 10 Host OS"]
         Bridge["Physical Bridge: br0"]
-        KVM["KVM / QEMU Hypervisor"]
         Cloudflared["cloudflared container (--net=host)"]
-
+        
+        HostOS --- Bridge
         Bridge --- Cloudflared
-        Bridge --- VM1["freeipa (172.30.1.85)"]
-        Bridge --- VM2["portfolio (172.30.1.93)"]
-        Bridge --- VM3["minecraft (172.30.1.91)"]
-        Bridge --- VM4["palworld (172.30.1.90)"]
-        Bridge --- VM5["navidrome (172.30.1.92)"]
+        
+        subgraph VMs ["KVM Guest Virtual Machines"]
+            VM1["freeipa (172.30.1.85)"]
+            VM2["portfolio (172.30.1.93)"]
+            VM3["minecraft (172.30.1.91)"]
+            VM4["palworld (172.30.1.90)"]
+            VM5["navidrome (172.30.1.92)"]
+        end
+        
+        Bridge --- VM1
+        Bridge --- VM2
+        Bridge --- VM3
+        Bridge --- VM4
+        Bridge --- VM5
     end
 
-    subgraph Cloudflare ["Cloudflare Edge (WAN)"]
-        CF_Edge["Cloudflare Proxy"]
-        CF_Edge -->|Secure Tunnel| Cloudflared
-        CF_Edge -->|portfolio.shooey.xyz| VM2
-        CF_Edge -->|hampter.shooey.xyz| VM2
-        CF_Edge -->|ipa.shooey.xyz| VM1
-    end
+    %% Network Connections
+    CF -->|Secure SSL Tunnel| Cloudflared
+    CF -.->|portfolio.shooey.xyz| VM2
+    CF -.->|hampter.shooey.xyz| VM2
+    CF -.->|ipa.shooey.xyz| VM1
+    
+    Playit -->|TCP Tunnel:25565| VM3
+    Playit -->|UDP Tunnel:8211| VM4
 
-    subgraph Playit ["Playit.gg Edge (WAN)"]
-        Playit_Edge["Playit Relays"]
-        Playit_Edge -->|UDP Tunnel| VM4
-        Playit_Edge -->|TCP Tunnel| VM3
-    end
+    %% Visual Styling Definitions
+    style HostOS fill:#34495e,stroke:#2c3e50,stroke-width:2px,color:#fff
+    style Bridge fill:#27ae60,stroke:#218c53,stroke-width:2px,color:#fff
+    style Cloudflared fill:#2980b9,stroke:#2471a3,stroke-width:2px,color:#fff
+    style CF fill:#d35400,stroke:#ba4a00,stroke-width:2px,color:#fff
+    style Playit fill:#8e44ad,stroke:#7d3c98,stroke-width:2px,color:#fff
 ```
 
 ---
