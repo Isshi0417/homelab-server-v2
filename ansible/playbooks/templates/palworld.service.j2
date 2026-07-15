@@ -1,0 +1,20 @@
+[Unit]
+Description=Palworld Dedicated Server Container
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStartPre=-/usr/bin/podman rm -f palworld
+ExecStart=/usr/bin/podman run --name palworld \
+  -p 8211:8211/udp \
+  -v /home/{{ admin_user }}/containers/palworld:/palworld \
+  -e PLAYERS=8 \
+  -e PORT=8211 \
+  docker.io/thijsvanloef/palworld-server-docker:latest
+ExecStop=/usr/bin/podman stop -t 20 palworld
+ExecStopPost=-/usr/bin/podman rm -f palworld
+
+[Install]
+WantedBy=multi-user.target

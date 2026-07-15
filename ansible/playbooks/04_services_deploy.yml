@@ -1,0 +1,217 @@
+---
+# 1. PORTFOLIO VM DEPLOYMENT
+- name: Deploy Portfolio Dashboard on Portfolio VM
+  hosts: portfolio.lab.local
+  gather_facts: true
+  tasks:
+    - name: Install Podman
+      become: true
+      ansible.builtin.apt:
+        name: [podman, crun]
+        state: present
+        update_cache: true
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "/home/{{ admin_user }}/containers/portal"
+        - "/home/{{ admin_user }}/containers/hamster"
+
+    - name: Copy portal website files
+      ansible.builtin.copy:
+        src: "../../portal/"
+        dest: "/home/{{ admin_user }}/containers/portal/"
+        mode: "0644"
+
+    - name: Copy hamster website files
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/home/{{ admin_user }}/containers/hamster/"
+        mode: "0644"
+      with_fileglob:
+        - "../../hamster/*.html"
+        - "../../hamster/*.css"
+        - "../../hamster/*.js"
+
+    - name: Copy hamster images
+      ansible.builtin.copy:
+        src: "../../hamster/images"
+        dest: "/home/{{ admin_user }}/containers/hamster/"
+        mode: "0644"
+
+    - name: Deploy Portal Systemd Service
+      become: true
+      ansible.builtin.template:
+        src: "templates/portal.service.j2"
+        dest: "/etc/systemd/system/portal.service"
+        mode: "0644"
+
+    - name: Deploy Hamster Systemd Service
+      become: true
+      ansible.builtin.template:
+        src: "templates/hamster.service.j2"
+        dest: "/etc/systemd/system/hamster.service"
+        mode: "0644"
+
+    - name: Start and enable Portal service
+      become: true
+      ansible.builtin.systemd_service:
+        name: portal.service
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    - name: Start and enable Hamster service
+      become: true
+      ansible.builtin.systemd_service:
+        name: hamster.service
+        state: started
+        enabled: true
+        daemon_reload: true
+
+# 2. MINECRAFT VM DEPLOYMENT
+- name: Deploy Minecraft Server on Minecraft VM
+  hosts: minecraft.lab.local
+  gather_facts: true
+  tasks:
+    - name: Install Podman
+      become: true
+      ansible.builtin.apt:
+        name: [podman, crun]
+        state: present
+        update_cache: true
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "/home/{{ admin_user }}/containers/minecraft"
+
+    - name: Deploy Minecraft Systemd Service
+      become: true
+      ansible.builtin.template:
+        src: "templates/minecraft.service.j2"
+        dest: "/etc/systemd/system/minecraft.service"
+        mode: "0644"
+
+    - name: Start and enable Minecraft service
+      become: true
+      ansible.builtin.systemd_service:
+        name: minecraft.service
+        state: started
+        enabled: true
+        daemon_reload: true
+
+# 3. PALWORLD VM DEPLOYMENT
+- name: Deploy Palworld Server on Palworld VM
+  hosts: palworld.lab.local
+  gather_facts: true
+  tasks:
+    - name: Install Podman
+      become: true
+      ansible.builtin.apt:
+        name: [podman, crun]
+        state: present
+        update_cache: true
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "/home/{{ admin_user }}/containers/palworld"
+
+    - name: Deploy Palworld Systemd Service
+      become: true
+      ansible.builtin.template:
+        src: "templates/palworld.service.j2"
+        dest: "/etc/systemd/system/palworld.service"
+        mode: "0644"
+
+    - name: Start and enable Palworld service
+      become: true
+      ansible.builtin.systemd_service:
+        name: palworld.service
+        state: started
+        enabled: true
+        daemon_reload: true
+
+# 4. NAVIDROME VM DEPLOYMENT
+- name: Deploy Navidrome and Rclone Mount on Navidrome VM
+  hosts: navidrome.lab.local
+  gather_facts: true
+  tasks:
+    - name: Install Podman and utilities
+      become: true
+      ansible.builtin.apt:
+        name: [podman, crun, fuse3, rclone]
+        state: present
+        update_cache: true
+
+    - name: Enable user_allow_other in fuse.conf
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/fuse.conf
+        regexp: '^#?user_allow_other'
+        line: 'user_allow_other'
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "/home/{{ admin_user }}/.config/rclone"
+        - "/home/{{ admin_user }}/containers/navidrome/config"
+        - "/home/{{ admin_user }}/containers/navidrome/cache"
+
+    - name: Create Google Drive mount point
+      become: true
+      ansible.builtin.file:
+        path: /mnt/gdrive
+        state: directory
+        owner: "{{ admin_user }}"
+        group: "{{ admin_user }}"
+        mode: "0755"
+
+    - name: Copy rclone configuration
+      ansible.builtin.template:
+        src: "templates/rclone.conf.j2"
+        dest: "/home/{{ admin_user }}/.config/rclone/rclone.conf"
+        mode: "0600"
+
+    - name: Configure rclone-mount systemd service
+      become: true
+      ansible.builtin.template:
+        src: "templates/rclone-mount.service.j2"
+        dest: /etc/systemd/system/rclone-mount.service
+        mode: "0644"
+
+    - name: Start rclone-mount service
+      become: true
+      ansible.builtin.systemd_service:
+        name: rclone-mount
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    - name: Deploy Navidrome Systemd Service
+      become: true
+      ansible.builtin.template:
+        src: "templates/navidrome.service.j2"
+        dest: "/etc/systemd/system/navidrome.service"
+        mode: "0644"
+
+    - name: Start and enable Navidrome service
+      become: true
+      ansible.builtin.systemd_service:
+        name: navidrome.service
+        state: started
+        enabled: true
+        daemon_reload: true

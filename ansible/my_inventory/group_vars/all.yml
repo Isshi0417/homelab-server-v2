@@ -8,10 +8,10 @@ host_ip: "172.30.1.200"
 gateway_ip: "172.30.1.254"
 
 freeipa_ip: "172.30.1.85"
-portfolio_ip: "172.30.1.86"
-minecraft_ip: "172.30.1.87"
-palworld_ip: "172.30.1.88"
-navidrome_ip: "172.30.1.89"
+portfolio_ip: "172.30.1.93"
+minecraft_ip: "172.30.1.91"
+palworld_ip: "172.30.1.90"
+navidrome_ip: "172.30.1.92"
 
 dns_servers:
   - "172.30.1.85"
