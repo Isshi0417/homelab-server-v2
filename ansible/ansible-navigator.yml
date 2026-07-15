@@ -1,0 +1,14 @@
+---
+ansible-navigator:
+  ansible:
+    inventory:
+      entries:
+      - ./my_inventory/hosts
+    playbook:
+      path: ./site.yml
+  execution-environment:
+    enabled: false
+  logging:
+    file: ./ansible-navigator.log
+    level: info
+  mode: stdout
