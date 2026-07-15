@@ -49,7 +49,7 @@ sudo nmcli con add type bridge con-name br0 ifname br0
 
 ### Configure Static IP Parameters
 
-The command is borken down for readability:
+The command is broken down for readability:
 
 ```bash
 sudo nmcli con mod br0 ipv4.addresses "172.30.1.200/24"
